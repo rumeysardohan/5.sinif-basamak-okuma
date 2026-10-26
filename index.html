@@ -1,0 +1,1976 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Derin Deniz Matematik Turnuvası - 5. Sınıf Maarif Modeli</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --deep-blue: #061326;
+            --ocean-mid: #0c2b4e;
+            --ocean-top: #0284c7;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 50% 0%, #0369a1 0%, #0f172a 65%, #020617 100%);
+            color: #f8fafc;
+            min-height: 100vh;
+            overflow-x: hidden;
+            user-select: none;
+        }
+        .title-font {
+            font-family: 'Fredoka', sans-serif;
+        }
+        /* Underwater Background Animations */
+        @keyframes rise {
+            0% { transform: translateY(105vh) scale(0.5) translateX(0); opacity: 0; }
+            20% { opacity: 0.6; }
+            50% { transform: translateY(50vh) scale(0.9) translateX(15px); }
+            80% { opacity: 0.6; }
+            100% { transform: translateY(-15vh) scale(1.2) translateX(-10px); opacity: 0; }
+        }
+        .bubble {
+            position: fixed;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(56, 189, 248, 0.2));
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: rise linear infinite;
+        }
+        @keyframes swimFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+        .swim-anim {
+            animation: swimFloat 3.5s ease-in-out infinite;
+        }
+        @keyframes sway {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+        .coral-sway {
+            transform-origin: bottom center;
+            animation: sway 5s ease-in-out infinite;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(56, 189, 248, 0.35); }
+            50% { box-shadow: 0 0 35px rgba(45, 212, 191, 0.75); }
+        }
+        .active-team-glow {
+            animation: pulseGlow 2s infinite;
+            border-color: #38bdf8 !important;
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.82);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(56, 189, 248, 0.28);
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.72);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(148, 163, 184, 0.22);
+        }
+        /* Period Highlighting Colors */
+        .period-millions {
+            color: #fb7185; /* Rose */
+            background: rgba(244, 63, 94, 0.16);
+            border-bottom: 3px solid #fb7185;
+            padding: 2px 8px;
+            border-radius: 8px;
+        }
+        .period-thousands {
+            color: #fbbf24; /* Amber */
+            background: rgba(245, 158, 11, 0.16);
+            border-bottom: 3px solid #fbbf24;
+            padding: 2px 8px;
+            border-radius: 8px;
+        }
+        .period-ones {
+            color: #34d399; /* Emerald */
+            background: rgba(16, 185, 129, 0.16);
+            border-bottom: 3px solid #34d399;
+            padding: 2px 8px;
+            border-radius: 8px;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #0284c7; border-radius: 4px; }
+    </style>
+</head>
+<body class="relative flex flex-col justify-between min-h-screen p-3 sm:p-5">
+
+    <!-- Dynamic Bubbles Container -->
+    <div id="bubbles-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
+
+    <!-- Decorative Underwater Coral Reef Silhouette at Bottom -->
+    <div class="fixed bottom-0 left-0 right-0 pointer-events-none z-0 opacity-30 overflow-hidden h-36 flex items-end justify-between px-4">
+        <svg viewBox="0 0 200 120" class="w-48 h-28 coral-sway fill-teal-900">
+            <path d="M20,120 Q30,70 15,40 Q10,25 25,25 Q35,25 35,55 Q45,30 55,15 Q65,5 70,20 Q72,40 55,70 Q75,50 90,45 Q100,40 95,55 Q85,80 65,120 Z"/>
+        </svg>
+        <svg viewBox="0 0 200 120" class="w-56 h-32 coral-sway fill-sky-900" style="animation-delay: -2s;">
+            <path d="M90,120 Q95,80 75,45 Q70,30 85,30 Q98,35 102,70 Q110,35 125,20 Q135,10 140,25 Q138,55 120,85 Q140,65 155,60 Q165,60 155,75 Q135,95 125,120 Z"/>
+        </svg>
+    </div>
+
+    <!-- TOP NAVIGATION & TOURNAMENT HEADER -->
+    <header class="relative z-10 w-full max-w-7xl mx-auto glass-panel rounded-2xl px-4 py-3 mb-4 flex flex-wrap items-center justify-between gap-3 shadow-xl">
+        <div class="flex items-center space-x-3">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center shadow-lg text-2xl swim-anim">
+                🐳
+            </div>
+            <div>
+                <div class="flex items-center space-x-2">
+                    <h1 class="title-font text-lg sm:text-2xl font-bold text-white tracking-wide">Derin Deniz Matematik Turnuvası</h1>
+                    <span class="hidden md:inline-block px-2.5 py-0.5 text-xs font-bold bg-teal-500/20 text-teal-300 border border-teal-500/40 rounded-full">Maarif Modeli 5. Sınıf</span>
+                </div>
+                <p class="text-xs text-sky-300">7, 8 ve 9 Basamaklı Sayılar • Okuma • Yazma • Basamak & Bölük Değeri</p>
+            </div>
+        </div>
+
+        <!-- Center Turn / Round Indicator (Visible during game) -->
+        <div id="header-tournament-info" class="hidden items-center space-x-3 bg-slate-900/90 px-4 py-2 rounded-xl border border-sky-500/30">
+            <div class="text-xs text-slate-400 font-semibold uppercase">Tur</div>
+            <div id="round-indicator" class="title-font text-lg font-bold text-amber-400">1 / 5</div>
+            <div class="h-4 w-px bg-slate-700"></div>
+            <div class="text-xs text-slate-400">Sıradaki Takım:</div>
+            <div id="current-turn-badge" class="title-font text-sm sm:text-base font-bold text-sky-300 flex items-center space-x-1">
+                <span>🐬 Grup Yunus</span>
+            </div>
+        </div>
+
+        <!-- Right Controls -->
+        <div class="flex items-center space-x-2">
+            <button onclick="openTeacherModal()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-sky-500/30 text-xs font-semibold text-sky-200 flex items-center space-x-1.5 transition" title="Konu Özeti & Rehber">
+                <i class="fa-solid fa-compass text-sky-400"></i>
+                <span class="hidden sm:inline">Bölük Rehberi</span>
+            </button>
+            <button onclick="toggleSound()" id="sound-btn" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 border border-sky-500/30 flex items-center justify-center text-sky-300 transition" title="Ses Efektleri">
+                <i class="fa-solid fa-volume-high" id="sound-icon"></i>
+            </button>
+            <button onclick="confirmResetToSetup()" id="reset-btn" class="hidden px-3 py-2 rounded-xl bg-rose-950/70 hover:bg-rose-900 border border-rose-500/40 text-xs font-semibold text-rose-200 transition">
+                <i class="fa-solid fa-rotate-left mr-1"></i> Yeni Oyun
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="relative z-10 w-full max-w-7xl mx-auto flex-1 flex flex-col justify-center">
+
+        <!-- ==========================================
+             SCREEN 1: CLASSROOM GROUP SETUP
+             ========================================== -->
+        <section id="screen-setup" class="glass-panel rounded-3xl p-5 sm:p-8 shadow-2xl max-w-6xl mx-auto w-full space-y-6">
+            <div class="text-center space-y-2">
+                <span class="px-3 py-1 rounded-full bg-sky-500/20 border border-sky-400/40 text-sky-300 text-xs font-bold uppercase tracking-wider">Turnuva Kurulum Ekranı</span>
+                <h2 class="title-font text-2xl sm:text-4xl font-bold text-white">Dalgıç Takımlarını Hazırlayın!</h2>
+                <p class="text-slate-300 text-sm max-w-2xl mx-auto">
+                    Sınıfınızı 2, 3 veya 4 gruba ayırın, takım isimlerini ve deniz canlısı avatarlarını seçin. Sırası gelen grup kendi balığını seçerek soruyu yanıtlasın!
+                </p>
+            </div>
+
+            <!-- Configuration Controls -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+                <!-- Team Count -->
+                <div>
+                    <label class="block text-xs font-bold text-sky-300 uppercase mb-2"><i class="fa-solid fa-users mr-1"></i> Grup Sayısı</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="setTeamCount(2)" id="btn-tc-2" class="py-2.5 rounded-xl font-bold text-sm bg-sky-600 text-white border border-sky-400">2 Grup</button>
+                        <button onclick="setTeamCount(3)" id="btn-tc-3" class="py-2.5 rounded-xl font-bold text-sm bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700">3 Grup</button>
+                        <button onclick="setTeamCount(4)" id="btn-tc-4" class="py-2.5 rounded-xl font-bold text-sm bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700">4 Grup</button>
+                    </div>
+                </div>
+
+                <!-- Timer Config -->
+                <div>
+                    <label class="block text-xs font-bold text-amber-300 uppercase mb-2"><i class="fa-solid fa-stopwatch mr-1"></i> Soru Süresi (Süre Ölçer)</label>
+                    <select id="setup-timer" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-sm font-semibold text-white focus:outline-none focus:border-sky-400">
+                        <option value="30">30 Saniye (Hızlı)</option>
+                        <option value="45" selected>45 Saniye (İdeal)</option>
+                        <option value="60">60 Saniye (Rahat)</option>
+                        <option value="90">90 Saniye (Uzun)</option>
+                    </select>
+                </div>
+
+                <!-- Lives (Oxygen) Config -->
+                <div>
+                    <label class="block text-xs font-bold text-emerald-300 uppercase mb-2"><i class="fa-solid fa-heart-pulse mr-1"></i> Can / Oksijen Tüpü</label>
+                    <select id="setup-lives" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-sm font-semibold text-white focus:outline-none focus:border-sky-400">
+                        <option value="3" selected>3 Oksijen Tüpü 🫧</option>
+                        <option value="4">4 Oksijen Tüpü 🫧</option>
+                        <option value="5">5 Oksijen Tüpü 🫧</option>
+                    </select>
+                </div>
+
+                <!-- Total Rounds Config -->
+                <div>
+                    <label class="block text-xs font-bold text-purple-300 uppercase mb-2"><i class="fa-solid fa-flag-checkered mr-1"></i> Toplam Tur Sayısı</label>
+                    <select id="setup-rounds" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-sm font-semibold text-white focus:outline-none focus:border-sky-400">
+                        <option value="3">3 Tur (Hızlı Ders)</option>
+                        <option value="5" selected>5 Tur (Standart Turnuva)</option>
+                        <option value="7">7 Tur (Büyük Maraton)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Team Name & Avatar Customization Grid -->
+            <div id="setup-teams-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Populated dynamically via JS -->
+            </div>
+
+            <!-- Category Preview Banner -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
+                <div class="glass-card p-3.5 rounded-2xl flex items-center space-x-3 border-l-4 border-l-orange-400">
+                    <div class="text-3xl">🐠</div>
+                    <div>
+                        <div class="title-font font-bold text-orange-300 text-sm">Palyaço Balığı (100P)</div>
+                        <p class="text-xs text-slate-300">7, 8 ve 9 basamaklı sayıları okuma.</p>
+                    </div>
+                </div>
+                <div class="glass-card p-3.5 rounded-2xl flex items-center space-x-3 border-l-4 border-l-amber-400">
+                    <div class="text-3xl">🐡</div>
+                    <div>
+                        <div class="title-font font-bold text-amber-300 text-sm">Balon Balığı (150P)</div>
+                        <p class="text-xs text-slate-300">Akıllı bölük klavyesiyle sayı yazma.</p>
+                    </div>
+                </div>
+                <div class="glass-card p-3.5 rounded-2xl flex items-center space-x-3 border-l-4 border-l-purple-400">
+                    <div class="text-3xl">🐙</div>
+                    <div>
+                        <div class="title-font font-bold text-purple-300 text-sm">Bilge Ahtapot (200P)</div>
+                        <p class="text-xs text-slate-300">Basamak değeri, bölükler ve çözümleme.</p>
+                    </div>
+                </div>
+                <div class="glass-card p-3.5 rounded-2xl flex items-center space-x-3 border-l-4 border-l-pink-400">
+                    <div class="text-3xl">🦪</div>
+                    <div>
+                        <div class="title-font font-bold text-pink-300 text-sm">Gizemli İstiridye (250P)</div>
+                        <p class="text-xs text-slate-300">Yüksek ödüllü sürpriz karışık soru!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center pt-2">
+                <button onclick="startTournament()" class="w-full sm:w-auto px-12 py-4 bg-gradient-to-r from-sky-500 via-teal-500 to-emerald-500 hover:from-sky-400 hover:to-emerald-400 text-white title-font font-bold text-xl rounded-2xl shadow-xl transform hover:-translate-y-0.5 transition">
+                    <i class="fa-solid fa-water mr-2"></i> Turnuvayı Başlat!
+                </button>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SCREEN 2: TOURNAMENT ARENA (HUB + QUESTIONS)
+             ========================================== -->
+        <section id="screen-arena" class="hidden flex-col gap-4 w-full">
+
+            <!-- TEAM SCOREBOARD BAR -->
+            <div id="teams-scoreboard" class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                <!-- Populated dynamically via JS -->
+            </div>
+
+            <!-- SUB-VIEW 2A: UNDERWATER MAP & CATEGORY SELECTION HUB -->
+            <div id="view-fish-hub" class="glass-panel rounded-3xl p-5 sm:p-8 text-center space-y-6 shadow-2xl">
+                <div class="space-y-1.5">
+                    <div id="hub-turn-announcement" class="inline-flex items-center space-x-2 px-5 py-1.5 rounded-full bg-sky-500/20 border border-sky-400/40 text-sky-200 font-bold text-sm sm:text-base shadow-inner">
+                        <span>Sıradaki Takım: 🐬 Grup Yunus</span>
+                    </div>
+                    <h2 class="title-font text-2xl sm:text-4xl font-bold text-white">Deniz Altı Haritası: Kategorinizi Seçin!</h2>
+                    <p class="text-slate-300 text-xs sm:text-sm">Takımca karar verin ve bir deniz canlısı seçin. Doğru cevap serisi (streak) ekstra +25 İnci Puanı kazandırır!</p>
+                </div>
+
+                <!-- Optional Digit Filter Bar -->
+                <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Basamak Sayısı Tercihi:</span>
+                    <button onclick="setDifficulty(0)" id="diff-0" class="px-3.5 py-1.5 rounded-xl font-bold text-xs sm:text-sm border transition bg-sky-600 text-white border-sky-400 shadow-lg">
+                        🎲 Karışık (7, 8 ve 9 Basamak)
+                    </button>
+                    <button onclick="setDifficulty(7)" id="diff-7" class="px-3.5 py-1.5 rounded-xl font-bold text-xs sm:text-sm border transition bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700">
+                        7 Basamaklı
+                    </button>
+                    <button onclick="setDifficulty(8)" id="diff-8" class="px-3.5 py-1.5 rounded-xl font-bold text-xs sm:text-sm border transition bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700">
+                        8 Basamaklı
+                    </button>
+                    <button onclick="setDifficulty(9)" id="diff-9" class="px-3.5 py-1.5 rounded-xl font-bold text-xs sm:text-sm border transition bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700">
+                        9 Basamaklı
+                    </button>
+                </div>
+
+                <!-- The 4 Sea Creature Category Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-1">
+                    
+                    <!-- 1. Clownfish (Reading - 100 Puan) -->
+                    <button onclick="selectCategory('reading')" class="group glass-card hover:bg-orange-950/40 border-2 border-orange-500/30 hover:border-orange-400 rounded-3xl p-5 text-left transition-all duration-300 transform hover:-translate-y-2 flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute -right-6 -top-6 w-28 h-28 bg-orange-500/10 rounded-full blur-xl group-hover:bg-orange-500/25 transition"></div>
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2.5 py-1 rounded-full bg-orange-500/20 text-orange-300 text-xs font-bold border border-orange-500/30">Okuma Bölümü</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 text-xs font-extrabold border border-amber-400/30">100 Puan</span>
+                            </div>
+                            <div class="h-24 flex items-center justify-center my-2 swim-anim">
+                                <svg viewBox="0 0 160 100" class="w-32 h-20 drop-shadow-lg">
+                                    <path d="M25,50 L5,25 C15,40 15,60 5,75 Z" fill="#f97316" stroke="#1e293b" stroke-width="3"/>
+                                    <path d="M70,22 Q85,5 105,22 Z" fill="#f97316" stroke="#1e293b" stroke-width="3"/>
+                                    <path d="M75,78 Q90,95 105,76 Z" fill="#f97316" stroke="#1e293b" stroke-width="3"/>
+                                    <ellipse cx="85" cy="50" rx="60" ry="32" fill="#f97316" stroke="#1e293b" stroke-width="3"/>
+                                    <path d="M52,23 Q60,50 52,77 L64,80 Q72,50 64,20 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2.5"/>
+                                    <path d="M92,19 Q102,50 92,81 L106,79 Q115,50 106,21 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2.5"/>
+                                    <circle cx="125" cy="42" r="7" fill="#ffffff"/>
+                                    <circle cx="127" cy="42" r="4" fill="#0f172a"/>
+                                    <circle cx="129" cy="40" r="1.5" fill="#ffffff"/>
+                                    <path d="M132,56 Q125,62 118,57" fill="none" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <h3 class="title-font text-xl font-bold text-white group-hover:text-orange-300 transition">🐠 Palyaço Balığı</h3>
+                            <div class="text-xs font-bold text-orange-400 mb-2">Sayı Okuma Bölümü</div>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Verilen milyonluk sayıların doğru Türkçe okunuşunu sıfır tuzaklarına düşmeden bul!
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-700/60 flex items-center justify-between text-xs font-bold text-orange-300">
+                            <span>Soruyu Aç (100 İnci)</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                        </div>
+                    </button>
+
+                    <!-- 2. Pufferfish (Writing - 150 Puan) -->
+                    <button onclick="selectCategory('writing')" class="group glass-card hover:bg-amber-950/40 border-2 border-amber-500/30 hover:border-amber-400 rounded-3xl p-5 text-left transition-all duration-300 transform hover:-translate-y-2 flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute -right-6 -top-6 w-28 h-28 bg-amber-500/10 rounded-full blur-xl group-hover:bg-amber-500/25 transition"></div>
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold border border-amber-500/30">Yazma Bölümü</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 text-xs font-extrabold border border-amber-400/30">150 Puan</span>
+                            </div>
+                            <div class="h-24 flex items-center justify-center my-2 swim-anim" style="animation-delay: 0.5s;">
+                                <svg viewBox="0 0 160 110" class="w-32 h-20 drop-shadow-lg">
+                                    <polygon points="80,5 75,18 85,18" fill="#eab308"/>
+                                    <polygon points="50,12 52,25 62,20" fill="#eab308"/>
+                                    <polygon points="110,12 98,20 108,25" fill="#eab308"/>
+                                    <polygon points="80,105 75,92 85,92" fill="#eab308"/>
+                                    <polygon points="50,98 52,85 62,90" fill="#eab308"/>
+                                    <polygon points="110,98 98,90 108,85" fill="#eab308"/>
+                                    <path d="M28,55 L8,38 L12,55 L8,72 Z" fill="#f59e0b" stroke="#1e293b" stroke-width="2.5"/>
+                                    <circle cx="82" cy="55" r="42" fill="#fbbf24" stroke="#1e293b" stroke-width="3"/>
+                                    <path d="M45,68 Q82,95 119,68 Q105,96 82,96 Q59,96 45,68 Z" fill="#fef08a"/>
+                                    <circle cx="108" cy="60" r="6" fill="#fb7185" opacity="0.6"/>
+                                    <circle cx="105" cy="43" r="8" fill="#ffffff" stroke="#1e293b" stroke-width="2"/>
+                                    <circle cx="107" cy="43" r="4" fill="#0f172a"/>
+                                    <circle cx="109" cy="41" r="1.5" fill="#ffffff"/>
+                                    <circle cx="123" cy="54" r="3.5" fill="#d97706" stroke="#1e293b" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <h3 class="title-font text-xl font-bold text-white group-hover:text-amber-300 transition">🐡 Balon Balığı</h3>
+                            <div class="text-xs font-bold text-amber-400 mb-2">Sayı Yazma Bölümü</div>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Okunuşu verilen sayıyı Milyonlar, Binler ve Birler bölüğü kutularına rakamlarla tuşla!
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-700/60 flex items-center justify-between text-xs font-bold text-amber-300">
+                            <span>Soruyu Aç (150 İnci)</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                        </div>
+                    </button>
+
+                    <!-- 3. Wise Octopus (Place Value - 200 Puan) -->
+                    <button onclick="selectCategory('placevalue')" class="group glass-card hover:bg-purple-950/40 border-2 border-purple-500/30 hover:border-purple-400 rounded-3xl p-5 text-left transition-all duration-300 transform hover:-translate-y-2 flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute -right-6 -top-6 w-28 h-28 bg-purple-500/10 rounded-full blur-xl group-hover:bg-purple-500/25 transition"></div>
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2.5 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-bold border border-purple-500/30">Basamak & Bölük</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 text-xs font-extrabold border border-amber-400/30">200 Puan</span>
+                            </div>
+                            <div class="h-24 flex items-center justify-center my-2 swim-anim" style="animation-delay: 1s;">
+                                <svg viewBox="0 0 160 110" class="w-32 h-20 drop-shadow-lg">
+                                    <path d="M55,65 Q30,90 20,75 Q15,65 28,65" fill="none" stroke="#a855f7" stroke-width="9" stroke-linecap="round"/>
+                                    <path d="M68,70 Q50,102 38,92" fill="none" stroke="#9333ea" stroke-width="9" stroke-linecap="round"/>
+                                    <path d="M92,70 Q110,102 122,92" fill="none" stroke="#9333ea" stroke-width="9" stroke-linecap="round"/>
+                                    <path d="M105,65 Q130,90 140,75 Q145,65 132,65" fill="none" stroke="#a855f7" stroke-width="9" stroke-linecap="round"/>
+                                    <ellipse cx="80" cy="42" rx="34" ry="30" fill="#a855f7" stroke="#1e293b" stroke-width="3"/>
+                                    <circle cx="67" cy="44" r="10" fill="#ffffff" stroke="#fbbf24" stroke-width="3"/>
+                                    <circle cx="93" cy="44" r="10" fill="#ffffff" stroke="#fbbf24" stroke-width="3"/>
+                                    <line x1="77" y1="44" x2="83" y2="44" stroke="#fbbf24" stroke-width="3"/>
+                                    <circle cx="67" cy="44" r="4" fill="#0f172a"/>
+                                    <circle cx="93" cy="44" r="4" fill="#0f172a"/>
+                                    <path d="M74,58 Q80,63 86,58" fill="none" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <h3 class="title-font text-xl font-bold text-white group-hover:text-purple-300 transition">🐙 Bilge Ahtapot</h3>
+                            <div class="text-xs font-bold text-purple-400 mb-2">Basamak & Bölük Değeri</div>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Basamak değeri, sayı değeri, bölüklerdeki sayılar ve çözümleme bulmacalarını çöz!
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-700/60 flex items-center justify-between text-xs font-bold text-purple-300">
+                            <span>Soruyu Aç (200 İnci)</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                        </div>
+                    </button>
+
+                    <!-- 4. Mystery Oyster (Surprise - 250 Puan) -->
+                    <button onclick="selectCategory('mystery')" class="group glass-card hover:bg-pink-950/40 border-2 border-pink-500/30 hover:border-pink-400 rounded-3xl p-5 text-left transition-all duration-300 transform hover:-translate-y-2 flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute -right-6 -top-6 w-28 h-28 bg-pink-500/15 rounded-full blur-xl group-hover:bg-pink-500/30 transition"></div>
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2.5 py-1 rounded-full bg-pink-500/20 text-pink-300 text-xs font-bold border border-pink-500/30">Sürpriz Kutu</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-gradient-to-r from-amber-500 to-pink-500 text-white text-xs font-extrabold shadow">250 Puan</span>
+                            </div>
+                            <div class="h-24 flex items-center justify-center my-2 swim-anim" style="animation-delay: 1.5s;">
+                                <svg viewBox="0 0 160 110" class="w-32 h-20 drop-shadow-lg">
+                                    <!-- Bottom Shell -->
+                                    <path d="M25,70 Q80,105 135,70 L120,55 L40,55 Z" fill="#db2777" stroke="#1e293b" stroke-width="3"/>
+                                    <!-- Top Open Shell -->
+                                    <path d="M20,55 Q80,5 140,55 Q115,65 80,60 Q45,65 20,55 Z" fill="#f472b6" stroke="#1e293b" stroke-width="3"/>
+                                    <!-- Glowing Pearl -->
+                                    <circle cx="80" cy="62" r="16" fill="#fef08a" stroke="#f59e0b" stroke-width="2.5"/>
+                                    <circle cx="74" cy="56" r="5" fill="#ffffff"/>
+                                </svg>
+                            </div>
+                            <h3 class="title-font text-xl font-bold text-white group-hover:text-pink-300 transition">🦪 Gizemli İstiridye</h3>
+                            <div class="text-xs font-bold text-pink-400 mb-2">Sürpriz Karışık Soru</div>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Okuma, yazma veya basamak değerinden rastgele gelen yüksek ödüllü dev inci sorusu!
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-700/60 flex items-center justify-between text-xs font-bold text-pink-300">
+                            <span>Şansını Dene (250 İnci)</span>
+                            <i class="fa-solid fa-wand-magic-sparkles group-hover:translate-x-1 transition"></i>
+                        </div>
+                    </button>
+
+                </div>
+            </div>
+
+            <!-- SUB-VIEW 2B: ACTIVE QUESTION & INTERACTION STAGE -->
+            <div id="view-question-stage" class="hidden glass-panel rounded-3xl p-5 sm:p-7 shadow-2xl space-y-5">
+                
+                <!-- Question Top Bar: Category Badge, Active Team, Timer & 3 Lifelines -->
+                <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-700/70">
+                    <div class="flex items-center space-x-3">
+                        <div id="q-category-icon" class="w-12 h-12 rounded-2xl bg-orange-500/20 border border-orange-400/40 flex items-center justify-center text-2xl">
+                            🐠
+                        </div>
+                        <div>
+                            <div id="q-category-title" class="title-font font-bold text-lg text-white">Palyaço Balığı • Sayı Okuma</div>
+                            <div class="flex items-center space-x-2">
+                                <span id="q-reward-badge" class="text-xs font-bold text-amber-300">Ödül: +100 İnci Puanı</span>
+                                <span class="text-slate-600">•</span>
+                                <span id="q-active-team-oxygen" class="text-xs font-semibold text-sky-300">🫧🫧🫧</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Countdown Timer Widget -->
+                    <div class="flex items-center space-x-3 bg-slate-900/90 px-4 py-2.5 rounded-2xl border border-sky-500/30 min-w-[210px]">
+                        <i class="fa-solid fa-hourglass-half text-sky-400 animate-spin" style="animation-duration: 4s;"></i>
+                        <div class="flex-1">
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-slate-400">KALAN SÜRE</span>
+                                <span id="timer-text" class="text-sky-300 title-font text-sm">45 sn</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div id="timer-bar" class="h-full bg-gradient-to-r from-emerald-400 via-sky-400 to-blue-500 w-full transition-all duration-300"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3 Underwater Lifelines (Jokerler) -->
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="useJoker('lantern')" id="joker-lantern" class="px-3 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/50 text-amber-200 text-xs font-bold flex items-center space-x-1.5 transition" title="Fener Balığı İpucu: Bölükleri renklendirir ve basamak tablosu ipucu açar">
+                            <span>🔦</span>
+                            <span>Fener Balığı</span>
+                        </button>
+                        <button onclick="useJoker('crab')" id="joker-crab" class="px-3 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-400/50 text-rose-200 text-xs font-bold flex items-center space-x-1.5 transition" title="Yengeç Kıskacı: 2 yanlış şıkkı eler veya yazma bölümünde 1 bölüğü doldurur">
+                            <span>🦀</span>
+                            <span>Yengeç Kıskacı</span>
+                        </button>
+                        <button onclick="useJoker('oxygen')" id="joker-oxygen" class="px-3 py-2 rounded-xl bg-teal-500/20 hover:bg-teal-500/30 border border-teal-400/50 text-teal-200 text-xs font-bold flex items-center space-x-1.5 transition" title="Ekstra Oksijen: Süreye +20 saniye ekler">
+                            <span>🫧</span>
+                            <span>+20 Sn Oksijen</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Dynamic Question Prompt Area -->
+                <div class="bg-slate-900/75 border border-sky-500/25 rounded-2xl p-5 sm:p-6 text-center space-y-4">
+                    <div id="q-instruction" class="text-xs sm:text-sm font-bold uppercase tracking-wider text-sky-300">
+                        Aşağıdaki doğal sayının doğru okunuşu hangisidir?
+                    </div>
+
+                    <!-- Giant Number or Text Display -->
+                    <div id="q-main-display" class="title-font text-2xl sm:text-4xl md:text-5xl font-bold text-white tracking-wider py-2">
+                        405 082 910
+                    </div>
+
+                    <!-- Lantern Joker Place-Value Table Hint (Appears when Lantern is used or after answer) -->
+                    <div id="q-period-helper" class="hidden flex-col items-center justify-center gap-2 pt-3 border-t border-slate-800">
+                        <div class="flex flex-wrap items-center justify-center gap-3 text-xs font-bold">
+                            <span id="helper-millions-badge" class="px-3 py-1.5 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/40">🔴 Milyonlar Bölüğü</span>
+                            <span id="helper-thousands-badge" class="px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40">🟡 Binler Bölüğü</span>
+                            <span id="helper-ones-badge" class="px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">🟢 Birler Bölüğü</span>
+                        </div>
+                        <div id="helper-table-text" class="text-xs text-slate-300"></div>
+                    </div>
+                </div>
+
+                <!-- INTERACTION MODE 1: MULTIPLE CHOICE (Used for Reading & Place Value) -->
+                <div id="interaction-mcq" class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                    <!-- Dynamically populated options -->
+                </div>
+
+                <!-- INTERACTION MODE 2: SMARTBOARD KEYPAD (Used for Pufferfish Writing) -->
+                <div id="interaction-keypad" class="hidden flex-col items-center space-y-5">
+                    
+                    <!-- The 3 Period Boxes (Milyonlar | Binler | Birler) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-3xl">
+                        <!-- Milyonlar Box -->
+                        <div onclick="selectPeriodBox(0)" id="pbox-0" class="cursor-pointer p-4 rounded-2xl bg-slate-900/90 border-2 border-rose-500 shadow-lg text-center transition">
+                            <div class="text-xs font-bold text-rose-400 uppercase mb-1">Milyonlar Bölüğü</div>
+                            <div id="pbox-val-0" class="title-font text-3xl sm:text-4xl font-bold text-white tracking-widest min-h-[44px] flex items-center justify-center">
+                                ___
+                            </div>
+                            <div id="pbox-hint-0" class="text-[11px] text-slate-400 mt-1">Örn: 45 veya 120</div>
+                        </div>
+
+                        <!-- Binler Box -->
+                        <div onclick="selectPeriodBox(1)" id="pbox-1" class="cursor-pointer p-4 rounded-2xl bg-slate-900/90 border-2 border-slate-700 hover:border-amber-400/60 text-center transition">
+                            <div class="text-xs font-bold text-amber-400 uppercase mb-1">Binler Bölüğü (3 Rakam)</div>
+                            <div id="pbox-val-1" class="title-font text-3xl sm:text-4xl font-bold text-white tracking-widest min-h-[44px] flex items-center justify-center">
+                                ___
+                            </div>
+                            <div class="text-[11px] text-slate-400 mt-1">Boş basamaklara 0 koyun</div>
+                        </div>
+
+                        <!-- Birler Box -->
+                        <div onclick="selectPeriodBox(2)" id="pbox-2" class="cursor-pointer p-4 rounded-2xl bg-slate-900/90 border-2 border-slate-700 hover:border-emerald-400/60 text-center transition">
+                            <div class="text-xs font-bold text-emerald-400 uppercase mb-1">Birler Bölüğü (3 Rakam)</div>
+                            <div id="pbox-val-2" class="title-font text-3xl sm:text-4xl font-bold text-white tracking-widest min-h-[44px] flex items-center justify-center">
+                                ___
+                            </div>
+                            <div class="text-[11px] text-slate-400 mt-1">Boş basamaklara 0 koyun</div>
+                        </div>
+                    </div>
+
+                    <!-- Smartboard Number Pad -->
+                    <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 max-w-2xl bg-slate-900/80 p-4 rounded-2xl border border-slate-700">
+                        <button onclick="keypadPress('1')" class="w-14 h-14 sm:w-16 sm:h-14 rounded-xl bg-slate-800 hover:bg-sky-600 text-white title-font text-2xl font-bold border border-slate-600 transition active:scale-95">1</button>
+                        <button onclick="keypadPress('2')" class="w-14 h-14 sm:w-16 sm:h-14 rounded-xl bg-slate-800 hover:bg-sky-600 text-white title-font text-2xl font-bold border border-slate-600 transition active:scale-95">2</button>
+                        <button onclick="keypadPress('3')" class="w-14 h-14 sm:w-16 sm:h-14 rounded-xl bg-slate-800 hover:bg-sky-600 text-white title-font text-2xl font-bold border border-slate-600 transition active:scale-95">3</button>
+                        <button onclick="keypadPress('4')" class="w-14 h-14 sm:w-16 sm:h-14 rounded-xl bg-slate-800 hover:bg-sky-600 text-white title-font text-2xl font-bold border border-slate-600 transition active:scale-95">4</button>
+                        <button onclick="keypadPress('5')" class="w-14 h-14 sm:w-16 sm:h-14 rounded-xl bg-slate-800 hover:bg-sky-600 text-white title-font text-2xl font-bold border border-slate-600 transition active:scale-95">5</button>
+                        <button onclick="keypadPress('6')" class="w-14 h-14 sm:w-16 sm:h-14 rounded-xl bg-slate-800 hover:bg-sky-600 text-white title-font text-2xl font-bold border border-slate-600 transition active:scale-95">6</button>
+                        <button onclick="keypadPress('7')" class="w-14 h-14 sm:w-16 sm:h-14 rounded-xl bg-slate-800 hover:bg-sky-600 text-white title-font text-2xl font-bold border border-slate-600 transition active:scale-95">7</button>
+                        <button onclick="keypadPress('8')" class="w-14 h-14 sm:w-16 sm:h-14 rounded-xl bg-slate-800 hover:bg-sky-600 text-white title-font text-2xl font-bold border border-slate-600 transition active:scale-95">8</button>
+                        <button onclick="keypadPress('9')" class="w-14 h-14 sm:w-16 sm:h-14 rounded-xl bg-slate-800 hover:bg-sky-600 text-white title-font text-2xl font-bold border border-slate-600 transition active:scale-95">9</button>
+                        <button onclick="keypadPress('0')" class="w-14 h-14 sm:w-16 sm:h-14 rounded-xl bg-slate-800 hover:bg-sky-600 text-amber-300 title-font text-2xl font-bold border border-slate-600 transition active:scale-95">0</button>
+                        <button onclick="keypadPress('000')" class="px-4 h-14 rounded-xl bg-slate-800 hover:bg-amber-600 text-amber-300 title-font text-lg font-bold border border-slate-600 transition active:scale-95" title="Bölüğe 000 Yaz">000</button>
+                        <button onclick="keypadBackspace()" class="px-4 h-14 rounded-xl bg-rose-900/80 hover:bg-rose-700 text-rose-200 title-font text-lg font-bold border border-rose-500/40 transition active:scale-95">
+                            <i class="fa-solid fa-delete-left mr-1"></i> Sil
+                        </button>
+                        <button onclick="keypadClearAll()" class="px-4 h-14 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm font-bold border border-slate-500 transition">
+                            Temizle
+                        </button>
+                    </div>
+
+                    <button onclick="submitKeypadAnswer()" id="btn-submit-keypad" class="px-10 py-3.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 title-font font-bold text-lg rounded-2xl shadow-xl transition transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-check-double mr-2"></i> Cevabı Kontrol Et
+                    </button>
+                </div>
+
+                <!-- Educational Step-by-Step Explanation & Next Turn Box -->
+                <div id="q-feedback-panel" class="hidden rounded-2xl p-5 border transition-all duration-300 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-start space-x-3 text-left">
+                        <div id="q-feedback-icon" class="text-3xl mt-0.5">✅</div>
+                        <div>
+                            <div id="q-feedback-title" class="title-font font-bold text-lg text-white">Harika! Doğru Cevap!</div>
+                            <p id="q-feedback-detail" class="text-xs sm:text-sm text-slate-200 mt-1 leading-relaxed"></p>
+                        </div>
+                    </div>
+                    <div id="q-feedback-actions" class="flex flex-wrap items-center gap-2 shrink-0">
+                        <button onclick="advanceToNextTurn()" class="w-full sm:w-auto whitespace-nowrap px-6 py-3 bg-white text-slate-900 hover:bg-sky-100 title-font font-bold rounded-xl shadow-lg transition">
+                            Sıradaki Gruba Geç <i class="fa-solid fa-forward-step ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SCREEN 3: TOURNAMENT PODIUM & SUMMARY
+             ========================================== -->
+        <section id="screen-podium" class="hidden glass-panel rounded-3xl p-6 sm:p-10 text-center max-w-4xl mx-auto w-full space-y-6 shadow-2xl">
+            <div class="space-y-2">
+                <div class="text-5xl animate-bounce">🏆</div>
+                <h2 class="title-font text-3xl sm:text-5xl font-bold text-white">Turnuva Şampiyonları!</h2>
+                <p class="text-sky-300 text-sm sm:text-base">Derin Deniz Matematik Kaşifleri tüm turları başarıyla tamamladı!</p>
+            </div>
+
+            <!-- Visual Top 3 Podium Bars -->
+            <div id="visual-podium-bars" class="flex items-end justify-center gap-3 sm:gap-6 pt-6 pb-2 min-h-[210px]">
+                <!-- Dynamically populated -->
+            </div>
+
+            <!-- Detailed Standings List -->
+            <div id="podium-list" class="space-y-3 max-w-2xl mx-auto text-left">
+                <!-- Populated dynamically -->
+            </div>
+
+            <div class="pt-4 flex flex-wrap justify-center gap-4">
+                <button onclick="resetToSetup()" class="px-10 py-4 rounded-2xl bg-gradient-to-r from-sky-500 to-teal-500 hover:from-sky-400 hover:to-teal-400 text-white title-font font-bold text-lg shadow-xl transition transform hover:-translate-y-0.5">
+                    <i class="fa-solid fa-rotate-right mr-2"></i> Yeni Turnuva Başlat
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==========================================
+         MODAL 1: MAARİF MODELİ BÖLÜK REHBERİ (TEACHER/STUDENT HELPER)
+         ========================================== -->
+    <div id="modal-teacher" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
+        <div class="glass-panel rounded-3xl max-w-3xl w-full p-6 sm:p-8 space-y-5 border border-sky-400/40 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+                <div class="flex items-center space-x-2">
+                    <span class="text-2xl">🧭</span>
+                    <h3 class="title-font text-xl sm:text-2xl font-bold text-white">Çok Basamaklı Sayılar Rehberi (5. Sınıf)</h3>
+                </div>
+                <button onclick="closeTeacherModal()" class="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4 text-xs sm:text-sm text-slate-200 leading-relaxed">
+                <p>
+                    Doğal sayıları kolay okumak ve yazmak için sağdan sola doğru üçerli gruplara ayırırız. Her bir üçlü gruba <strong>BÖLÜK</strong> denir.
+                </p>
+
+                <!-- Visual Period Breakdown Table -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
+                    <div class="p-3 rounded-2xl bg-rose-950/50 border border-rose-500/40">
+                        <div class="font-bold text-rose-300 uppercase mb-1">Milyonlar Bölüğü</div>
+                        <div class="title-font text-3xl font-bold text-white tracking-widest my-1">4 0 8</div>
+                        <div class="text-[11px] text-rose-200">Yüz Milyonlar • On Milyonlar • Milyonlar</div>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-amber-950/50 border border-amber-500/40">
+                        <div class="font-bold text-amber-300 uppercase mb-1">Binler Bölüğü</div>
+                        <div class="title-font text-3xl font-bold text-white tracking-widest my-1">0 5 2</div>
+                        <div class="text-[11px] text-amber-200">Yüz Binler • On Binler • Binler</div>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-emerald-950/50 border border-emerald-500/40">
+                        <div class="font-bold text-emerald-300 uppercase mb-1">Birler Bölüğü</div>
+                        <div class="title-font text-3xl font-bold text-white tracking-widest my-1">9 0 7</div>
+                        <div class="text-[11px] text-emerald-200">Yüzler • Onlar • Birler</div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-700 space-y-2">
+                    <div class="font-bold text-sky-300">Örnek Okunuş (408 052 907):</div>
+                    <p class="text-white font-semibold">
+                        "<span class="text-rose-400">Dört yüz sekiz milyon</span> <span class="text-amber-400">elli iki bin</span> <span class="text-emerald-400">dokuz yüz yedi</span>"
+                    </p>
+                    <ul class="list-disc list-inside text-slate-300 space-y-1 pt-1">
+                        <li>Bir bölükteki tüm rakamlar <strong>000</strong> ise o bölüğün ismi okunmaz! (Örn: <code>12 000 405</code> &rarr; "On iki milyon dört yüz beş")</li>
+                        <li><strong>Sayı Değeri:</strong> Rakamın bulunduğu basamağa bakılmaksızın kendi değeridir.</li>
+                        <li><strong>Basamak Değeri:</strong> Rakamın bulunduğu basamağın değeri ile çarpımıdır.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="text-right">
+                <button onclick="closeTeacherModal()" class="px-6 py-2.5 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-xl transition">Anlaşıldı</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL 2: CONFIRMATION / REVIVAL MODAL
+         ========================================== -->
+    <div id="modal-dialog" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
+        <div class="glass-panel rounded-3xl max-w-md w-full p-6 text-center space-y-4 border border-sky-400/40 shadow-2xl">
+            <div id="dialog-icon" class="text-4xl">🫧</div>
+            <h3 id="dialog-title" class="title-font text-2xl font-bold text-white">Bilgilendirme</h3>
+            <p id="dialog-msg" class="text-sm text-slate-300"></p>
+            <div id="dialog-actions" class="flex justify-center gap-3 pt-2">
+                <!-- Dynamic buttons -->
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="relative z-10 text-center text-xs text-slate-400 mt-4 py-2">
+        Türkiye Yüzyılı Maarif Modeli 5. Sınıf Matematik • Derin Deniz Matematik Turnuvası
+    </footer>
+
+    <!-- ==========================================
+         GAME ENGINE & MATHEMATICS LOGIC
+         ========================================== -->
+    <script>
+        /* ----------------------------------------------------
+           1. SOUND SYNTHESIZER (Web Audio API - No external MP3s)
+        ---------------------------------------------------- */
+        let soundEnabled = true;
+        let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playEffect(type) {
+            if (!soundEnabled) return;
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+
+                if (type === 'click') {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(520, now);
+                    osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.09);
+                } else if (type === 'correct') {
+                    const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                    notes.forEach((freq, idx) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, now + idx * 0.09);
+                        gain.gain.setValueAtTime(0.18, now + idx * 0.09);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.09 + 0.25);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(now + idx * 0.09);
+                        osc.stop(now + idx * 0.09 + 0.26);
+                    });
+                } else if (type === 'wrong') {
+                    const notes = [300, 220];
+                    notes.forEach((freq, idx) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'sawtooth';
+                        osc.frequency.setValueAtTime(freq, now + idx * 0.18);
+                        gain.gain.setValueAtTime(0.12, now + idx * 0.18);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.18 + 0.25);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(now + idx * 0.18);
+                        osc.stop(now + idx * 0.18 + 0.26);
+                    });
+                } else if (type === 'tick') {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(800, now);
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'joker') {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, now);
+                    osc.frequency.exponentialRampToValueAtTime(1200, now + 0.25);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.26);
+                }
+            } catch (e) {
+                // Ignore audio errors on restricted devices
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('sound-icon');
+            icon.className = soundEnabled ? 'fa-solid fa-volume-high text-sky-300' : 'fa-solid fa-volume-xmark text-slate-500';
+            if (soundEnabled) playEffect('click');
+        }
+
+        /* ----------------------------------------------------
+           2. TURKISH NUMBER READING & GENERATION ENGINE
+        ---------------------------------------------------- */
+        const ONES_TR = ["", "bir", "iki", "üç", "dört", "beş", "altı", "yedi", "sekiz", "dokuz"];
+        const TENS_TR = ["", "on", "yirmi", "otuz", "kırk", "elli", "altmış", "yetmiş", "seksen", "doksan"];
+
+        // Converts a 0-999 integer into Turkish text
+        function readThreeDigits(num) {
+            num = parseInt(num, 10);
+            if (num === 0) return "";
+            const h = Math.floor(num / 100);
+            const t = Math.floor((num % 100) / 10);
+            const o = num % 10;
+            let parts = [];
+            if (h > 0) {
+                parts.push(h === 1 ? "yüz" : ONES_TR[h] + " yüz");
+            }
+            if (t > 0) {
+                parts.push(TENS_TR[t]);
+            }
+            if (o > 0) {
+                parts.push(ONES_TR[o]);
+            }
+            return parts.join(" ");
+        }
+
+        // Converts any 7, 8, or 9-digit number into grammatical Turkish text
+        function numberToTurkishText(num) {
+            const millions = Math.floor(num / 1000000);
+            const thousands = Math.floor((num % 1000000) / 1000);
+            const ones = num % 1000;
+
+            let result = [];
+            if (millions > 0) {
+                result.push(readThreeDigits(millions) + " milyon");
+            }
+            if (thousands > 0) {
+                if (thousands === 1) {
+                    result.push("bin");
+                } else {
+                    result.push(readThreeDigits(thousands) + " bin");
+                }
+            }
+            if (ones > 0) {
+                result.push(readThreeDigits(ones));
+            }
+            let text = result.join(" ");
+            return text.charAt(0).toUpperCase() + text.slice(1);
+        }
+
+        // Formats number with spaces between periods (Maarif Standard: 405 082 910)
+        function formatWithSpaces(num) {
+            const s = String(num);
+            return s.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+
+        // Formats number with colored spans for periods
+        function formatWithColoredPeriods(num) {
+            const millions = Math.floor(num / 1000000);
+            const thousands = String(Math.floor((num % 1000000) / 1000)).padStart(3, '0');
+            const ones = String(num % 1000).padStart(3, '0');
+            return `<span class="period-millions">${millions}</span> <span class="period-thousands">${thousands}</span> <span class="period-ones">${ones}</span>`;
+        }
+
+        // Generates a pedagogical 7, 8, or 9-digit number containing strategic zeros
+        function generatePedagogicalNumber(digitCount) {
+            if (!digitCount || digitCount === 0) {
+                const choices = [7, 8, 9];
+                digitCount = choices[Math.floor(Math.random() * choices.length)];
+            }
+
+            let millions = 0;
+            if (digitCount === 7) {
+                millions = Math.floor(Math.random() * 9) + 1; // 1 - 9
+            } else if (digitCount === 8) {
+                // Mix of numbers like 40, 85, 19
+                millions = (Math.floor(Math.random() * 9) + 1) * 10 + (Math.random() < 0.35 ? 0 : Math.floor(Math.random() * 9) + 1);
+            } else {
+                // 9 digits: e.g., 405, 820, 136
+                const h = Math.floor(Math.random() * 9) + 1;
+                const t = Math.random() < 0.4 ? 0 : Math.floor(Math.random() * 9) + 1;
+                const o = Math.random() < 0.3 ? 0 : Math.floor(Math.random() * 9) + 1;
+                millions = h * 100 + t * 10 + o;
+            }
+
+            // Generate thousands period with pedagogical zero patterns (e.g., 045, 300, 008, 000, 412)
+            const tPattern = Math.random();
+            let thousands = 0;
+            if (tPattern < 0.15) {
+                thousands = 0; // Entire thousands period is 000!
+            } else if (tPattern < 0.45) {
+                thousands = (Math.floor(Math.random() * 8) + 2) * 10 + (Math.floor(Math.random() * 9) + 1); // 021 - 099
+            } else if (tPattern < 0.75) {
+                thousands = (Math.floor(Math.random() * 9) + 1) * 100 + (Math.floor(Math.random() * 9) + 1); // X0Y
+            } else {
+                thousands = (Math.floor(Math.random() * 9) + 1) * 100 + (Math.floor(Math.random() * 9) + 1) * 10; // XY0
+            }
+
+            // Generate ones period with pedagogical zero patterns
+            const oPattern = Math.random();
+            let ones = 0;
+            if (oPattern < 0.35) {
+                ones = Math.floor(Math.random() * 9) + 1; // 001 - 009
+            } else if (oPattern < 0.65) {
+                ones = (Math.floor(Math.random() * 9) + 1) * 10 + (Math.floor(Math.random() * 9) + 1); // 011 - 099
+            } else {
+                ones = (Math.floor(Math.random() * 9) + 1) * 100 + (Math.random() < 0.5 ? 0 : Math.floor(Math.random() * 9) + 1) * 10 + (Math.floor(Math.random() * 9) + 1);
+            }
+
+            return millions * 1000000 + thousands * 1000 + ones;
+        }
+
+        /* ----------------------------------------------------
+           3. STATE MANAGEMENT & SETUP
+        ---------------------------------------------------- */
+        const AVATAR_POOL = ["🐬", "🦈", "🐙", "🐢", "🐳", "🦀", "🐡", "🦭"];
+        const MASCOTS = [
+            { icon: "🐬", defaultName: "Grup Yunus" },
+            { icon: "🦈", defaultName: "Grup Köpekbalığı" },
+            { icon: "🐙", defaultName: "Grup Ahtapot" },
+            { icon: "🐢", defaultName: "Grup Deniz Kaplumbağası" }
+        ];
+
+        let state = {
+            teamCount: 2,
+            turnTimeLimit: 45,
+            startingLives: 3,
+            totalRounds: 5,
+            currentRound: 1,
+            currentTeamIndex: 0,
+            selectedDifficulty: 0, // 0 = random (7,8,9), or specific 7, 8, 9
+            selectedAvatars: ["🐬", "🦈", "🐙", "🐢"],
+            usedNumbers: new Set(),
+            teams: [],
+            activeQuestion: null,
+            timerInterval: null,
+            timeRemaining: 45,
+            questionAnswered: false,
+            lanternActive: false,
+            // Keypad state for Pufferfish writing
+            activePeriodBox: 0,
+            periodInputs: ["", "", ""]
+        };
+
+        function initSetupScreen() {
+            createBackgroundBubbles();
+            setTeamCount(2);
+        }
+
+        function createBackgroundBubbles() {
+            const container = document.getElementById('bubbles-container');
+            container.innerHTML = '';
+            for (let i = 0; i < 18; i++) {
+                const b = document.createElement('div');
+                b.className = 'bubble';
+                const size = Math.random() * 24 + 8;
+                b.style.width = `${size}px`;
+                b.style.height = `${size}px`;
+                b.style.left = `${Math.random() * 100}%`;
+                b.style.animationDuration = `${Math.random() * 8 + 6}s`;
+                b.style.animationDelay = `${Math.random() * 6}s`;
+                container.appendChild(b);
+            }
+        }
+
+        function setTeamCount(count) {
+            playEffect('click');
+            state.teamCount = count;
+            [2, 3, 4].forEach(c => {
+                const btn = document.getElementById(`btn-tc-${c}`);
+                if (c === count) {
+                    btn.className = "py-2.5 rounded-xl font-bold text-sm bg-sky-600 text-white border border-sky-400 shadow-md";
+                } else {
+                    btn.className = "py-2.5 rounded-xl font-bold text-sm bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700";
+                }
+            });
+            renderSetupTeamsGrid();
+        }
+
+        function cycleTeamAvatar(teamIdx) {
+            playEffect('click');
+            const currentIcon = state.selectedAvatars[teamIdx];
+            const nextIdx = (AVATAR_POOL.indexOf(currentIcon) + 1) % AVATAR_POOL.length;
+            state.selectedAvatars[teamIdx] = AVATAR_POOL[nextIdx];
+            const btn = document.getElementById(`team-avatar-btn-${teamIdx}`);
+            if (btn) btn.innerText = state.selectedAvatars[teamIdx];
+        }
+
+        function renderSetupTeamsGrid() {
+            const grid = document.getElementById('setup-teams-grid');
+            grid.innerHTML = '';
+            for (let i = 0; i < state.teamCount; i++) {
+                const m = MASCOTS[i];
+                const currentAvatar = state.selectedAvatars[i] || m.icon;
+                const card = document.createElement('div');
+                card.className = "glass-card p-4 rounded-2xl border border-sky-500/30 flex flex-col space-y-3";
+                card.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <button onclick="cycleTeamAvatar(${i})" id="team-avatar-btn-${i}" title="Avatarı Değiştirmek İçin Tıklayın"
+                            class="w-14 h-14 rounded-2xl bg-slate-800 hover:bg-slate-700 border border-sky-400/40 flex items-center justify-center text-3xl shadow-inner transition transform active:scale-90 shrink-0">
+                            ${currentAvatar}
+                        </button>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[11px] font-bold text-sky-400 uppercase">${i + 1}. Takım İsmi</span>
+                                <span class="text-[10px] text-slate-400">İkona dokun değiştir</span>
+                            </div>
+                            <input type="text" id="team-name-input-${i}" value="${m.defaultName}" maxlength="22"
+                                class="w-full mt-1 bg-slate-900/90 border border-slate-700 focus:border-sky-400 rounded-xl px-3 py-1.5 text-sm font-bold text-white focus:outline-none">
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            }
+        }
+
+        /* ----------------------------------------------------
+           4. TOURNAMENT INITIALIZATION & HUD
+        ---------------------------------------------------- */
+        function startTournament() {
+            playEffect('correct');
+            state.turnTimeLimit = parseInt(document.getElementById('setup-timer').value, 10);
+            state.startingLives = parseInt(document.getElementById('setup-lives').value, 10);
+            state.totalRounds = parseInt(document.getElementById('setup-rounds').value, 10);
+            state.currentRound = 1;
+            state.currentTeamIndex = 0;
+            state.usedNumbers.clear();
+
+            state.teams = [];
+            for (let i = 0; i < state.teamCount; i++) {
+                const nameInput = document.getElementById(`team-name-input-${i}`);
+                const name = nameInput && nameInput.value.trim() ? nameInput.value.trim() : MASCOTS[i].defaultName;
+                state.teams.push({
+                    id: i,
+                    name: name,
+                    icon: state.selectedAvatars[i] || MASCOTS[i].icon,
+                    score: 0,
+                    lives: state.startingLives,
+                    maxLives: state.startingLives,
+                    streak: 0,
+                    correctCount: 0,
+                    wrongCount: 0,
+                    jokers: {
+                        lantern: true,
+                        crab: true,
+                        oxygen: true
+                    }
+                });
+            }
+
+            document.getElementById('screen-setup').classList.add('hidden');
+            document.getElementById('screen-podium').classList.add('hidden');
+            const arena = document.getElementById('screen-arena');
+            arena.classList.remove('hidden');
+            arena.classList.add('flex');
+
+            document.getElementById('header-tournament-info').classList.remove('hidden');
+            document.getElementById('header-tournament-info').classList.add('flex');
+            document.getElementById('reset-btn').classList.remove('hidden');
+
+            showFishHub();
+        }
+
+        function buildOxygenString(lives, maxLives) {
+            let html = '';
+            for (let l = 0; l < maxLives; l++) {
+                if (l < lives) {
+                    html += `<span class="text-base sm:text-lg" title="Dolu Oksijen Tüpü">🫧</span>`;
+                } else {
+                    html += `<span class="text-base sm:text-lg opacity-25 grayscale" title="Boş Tüp">🫧</span>`;
+                }
+            }
+            return html;
+        }
+
+        function renderScoreboard() {
+            const container = document.getElementById('teams-scoreboard');
+            container.innerHTML = '';
+
+            state.teams.forEach((team, idx) => {
+                const isCurrent = idx === state.currentTeamIndex;
+                const livesHtml = buildOxygenString(team.lives, team.maxLives);
+
+                const card = document.createElement('div');
+                card.className = `glass-panel rounded-2xl p-3.5 transition-all duration-300 flex flex-col justify-between ${isCurrent ? 'active-team-glow bg-sky-950/80 border-2' : 'opacity-80'}`;
+                card.innerHTML = `
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center space-x-2 truncate">
+                            <span class="text-2xl">${team.icon}</span>
+                            <div class="truncate">
+                                <div class="title-font font-bold text-sm sm:text-base text-white truncate">${team.name}</div>
+                                <div class="flex items-center space-x-1.5">
+                                    ${isCurrent ? '<span class="text-[10px] font-extrabold uppercase tracking-wider text-sky-300">🎯 Sıra Sizde</span>' : '<span class="text-[10px] text-slate-400">Bekliyor</span>'}
+                                    ${team.streak >= 2 ? `<span class="px-1.5 py-0.2 rounded bg-orange-500/20 text-orange-300 text-[10px] font-bold">🔥 ${team.streak} Seri</span>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <div class="title-font font-bold text-lg sm:text-xl text-amber-300">${team.score}</div>
+                            <div class="text-[10px] text-amber-200/80 font-semibold uppercase">İnci Puanı</div>
+                        </div>
+                    </div>
+                    <div class="mt-2.5 pt-2 border-t border-slate-700/60 flex items-center justify-between">
+                        <div class="flex items-center space-x-0.5">${livesHtml}</div>
+                        <div class="flex items-center space-x-1.5 text-xs">
+                            <span class="${team.jokers.lantern ? 'opacity-100' : 'opacity-20'}" title="Fener Balığı İpucu">🔦</span>
+                            <span class="${team.jokers.crab ? 'opacity-100' : 'opacity-20'}" title="Yengeç Kıskacı">🦀</span>
+                            <span class="${team.jokers.oxygen ? 'opacity-100' : 'opacity-20'}" title="+20sn Ekstra Oksijen">🫧</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            // Update top bar info
+            const currentTeam = state.teams[state.currentTeamIndex];
+            document.getElementById('round-indicator').innerText = `${state.currentRound} / ${state.totalRounds}`;
+            document.getElementById('current-turn-badge').innerHTML = `<span>${currentTeam.icon} ${currentTeam.name}</span>`;
+            document.getElementById('hub-turn-announcement').innerHTML = `<span>🎯 Sıradaki Takım: ${currentTeam.icon} ${currentTeam.name} • Tur ${state.currentRound}/${state.totalRounds}</span>`;
+        }
+
+        function setDifficulty(diff) {
+            playEffect('click');
+            state.selectedDifficulty = diff;
+            [0, 7, 8, 9].forEach(d => {
+                const btn = document.getElementById(`diff-${d}`);
+                if (d === diff) {
+                    btn.className = "px-3.5 py-1.5 rounded-xl font-bold text-xs sm:text-sm border transition bg-sky-600 text-white border-sky-400 shadow-lg";
+                } else {
+                    btn.className = "px-3.5 py-1.5 rounded-xl font-bold text-xs sm:text-sm border transition bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700";
+                }
+            });
+        }
+
+        function showFishHub() {
+            stopTimer();
+            renderScoreboard();
+            document.getElementById('view-question-stage').classList.add('hidden');
+            document.getElementById('view-fish-hub').classList.remove('hidden');
+        }
+
+        /* ----------------------------------------------------
+           5. QUESTION GENERATORS FOR THE 4 SEA CREATURE OPTIONS
+        ---------------------------------------------------- */
+        function getUniquePedagogicalNumber(digitPref) {
+            let num = generatePedagogicalNumber(digitPref);
+            let guard = 0;
+            while (state.usedNumbers.has(num) && guard < 25) {
+                num = generatePedagogicalNumber(digitPref);
+                guard++;
+            }
+            state.usedNumbers.add(num);
+            return num;
+        }
+
+        function selectCategory(category) {
+            playEffect('click');
+            state.questionAnswered = false;
+            state.lanternActive = false;
+
+            const num = getUniquePedagogicalNumber(state.selectedDifficulty);
+
+            if (category === 'reading') {
+                state.activeQuestion = generateReadingQuestion(num, 100);
+            } else if (category === 'writing') {
+                state.activeQuestion = generateWritingQuestion(num, 150);
+            } else if (category === 'placevalue') {
+                state.activeQuestion = generatePlaceValueQuestion(num, 200);
+            } else {
+                // 🦪 Gizemli İstiridye (250 Puan) - Random category with 250 reward
+                const subCats = ['reading', 'writing', 'placevalue'];
+                const chosen = subCats[Math.floor(Math.random() * subCats.length)];
+                let q;
+                if (chosen === 'reading') q = generateReadingQuestion(num, 250);
+                else if (chosen === 'writing') q = generateWritingQuestion(num, 250);
+                else q = generatePlaceValueQuestion(num, 250);
+
+                q.icon = '🦪';
+                q.title = `Gizemli İstiridye • ${chosen === 'reading' ? 'Sürpriz Okuma' : (chosen === 'writing' ? 'Sürpriz Yazma' : 'Sürpriz Basamak Analizi')}`;
+                state.activeQuestion = q;
+            }
+
+            renderQuestionStage();
+            startTimer();
+        }
+
+        // 🐠 1. Clownfish: Reading Multi-Digit Numbers
+        function generateReadingQuestion(num, reward) {
+            const correctText = numberToTurkishText(num);
+            const millions = Math.floor(num / 1000000);
+            const thousands = Math.floor((num % 1000000) / 1000);
+            const ones = num % 1000;
+
+            let distractors = new Set();
+
+            // Distractor 1: Shift zeros in thousands period
+            const altThousands1 = thousands === 0 ? 10 : (thousands < 100 ? thousands * 10 : Math.floor(thousands / 10));
+            const d1 = numberToTurkishText(millions * 1000000 + altThousands1 * 1000 + ones);
+            if (d1 !== correctText) distractors.add(d1);
+
+            // Distractor 2: Shift zeros in ones period
+            const altOnes1 = ones < 10 ? ones * 100 : (ones < 100 ? (Math.floor(ones / 10) * 100 + (ones % 10)) : (ones % 100));
+            const d2 = numberToTurkishText(millions * 1000000 + thousands * 1000 + (altOnes1 || 70));
+            if (d2 !== correctText) distractors.add(d2);
+
+            // Distractor 3: Swap thousands and ones or modify millions
+            const altMillions = millions < 10 ? millions * 10 : (millions % 10 === 0 ? millions + 5 : millions - (millions % 10));
+            const d3 = numberToTurkishText((altMillions || 12) * 1000000 + thousands * 1000 + ones);
+            if (d3 !== correctText) distractors.add(d3);
+
+            // Distractor 4: Fallback variations if needed
+            while (distractors.size < 3) {
+                const randVariation = generatePedagogicalNumber(String(num).length);
+                const txt = numberToTurkishText(randVariation);
+                if (txt !== correctText) distractors.add(txt);
+            }
+
+            const options = [correctText, ...Array.from(distractors).slice(0, 3)];
+            shuffleArray(options);
+
+            const mStr = millions;
+            const tStr = String(thousands).padStart(3, '0');
+            const oStr = String(ones).padStart(3, '0');
+
+            return {
+                category: 'reading',
+                icon: '🐠',
+                title: 'Palyaço Balığı • Sayı Okuma Bölümü',
+                reward: reward,
+                number: num,
+                instruction: 'Aşağıdaki çok basamaklı doğal sayının doğru okunuşu hangisidir?',
+                displayHtml: formatWithSpaces(num),
+                coloredDisplayHtml: formatWithColoredPeriods(num),
+                options: options,
+                correctIndex: options.indexOf(correctText),
+                explanation: `Milyonlar bölüğü: <strong>${mStr}</strong>, Binler bölüğü: <strong>${tStr}</strong>, Birler bölüğü: <strong>${oStr}</strong> &rarr; "${correctText}"`
+            };
+        }
+
+        // 🐡 2. Pufferfish: Writing Multi-Digit Numbers via Period Keypad
+        function generateWritingQuestion(num, reward) {
+            const textPrompt = numberToTurkishText(num);
+            const millions = String(Math.floor(num / 1000000));
+            const thousands = String(Math.floor((num % 1000000) / 1000)).padStart(3, '0');
+            const ones = String(num % 1000).padStart(3, '0');
+
+            return {
+                category: 'writing',
+                icon: '🐡',
+                title: 'Balon Balığı • Sayı Yazma Bölümü',
+                reward: reward,
+                number: num,
+                instruction: 'Okunuşu verilen doğal sayıyı bölük kutularına rakamlarla yazınız:',
+                displayHtml: `<span class="text-xl sm:text-3xl text-amber-200 font-semibold leading-snug">"${textPrompt}"</span>`,
+                coloredDisplayHtml: `<span class="text-xl sm:text-3xl text-amber-200 font-semibold leading-snug">"${textPrompt}"</span>`,
+                expectedPeriods: [millions, thousands, ones],
+                explanation: `Doğru yazılışı: <strong>${millions} ${thousands} ${ones}</strong>. Eksik basamakların yerine mutlaka 0 (sıfır) konulmalıdır.`
+            };
+        }
+
+        // 🐙 3. Wise Octopus: Place Value, Period Analysis & Expanded Form
+        function generatePlaceValueQuestion(num, reward) {
+            const digitsStr = String(num).padStart(9, '0'); // 9-char representation for easy indexing
+            const placeNames = [
+                "Yüz milyonlar basamağı", "On milyonlar basamağı", "Milyonlar basamağı",
+                "Yüz binler basamağı", "On binler basamağı", "Binler basamağı",
+                "Yüzler basamağı", "Onlar basamağı", "Birler basamağı"
+            ];
+            const multipliers = [
+                100000000, 10000000, 1000000,
+                100000, 10000, 1000,
+                100, 10, 1
+            ];
+
+            const qTypes = ['place_value', 'period_number', 'place_diff', 'expanded_form'];
+            const chosenType = qTypes[Math.floor(Math.random() * qTypes.length)];
+
+            // Find valid non-zero indices within the actual number length
+            const startIdx = 9 - String(num).length;
+            let nonZeroIndices = [];
+            for (let i = startIdx; i < 9; i++) {
+                if (digitsStr[i] !== '0') nonZeroIndices.push(i);
+            }
+
+            if (chosenType === 'place_value' && nonZeroIndices.length > 0) {
+                const targetIdx = nonZeroIndices[Math.floor(Math.random() * nonZeroIndices.length)];
+                const digit = parseInt(digitsStr[targetIdx], 10);
+                const correctVal = digit * multipliers[targetIdx];
+                const correctFormatted = formatWithSpaces(correctVal);
+
+                let distractors = new Set();
+                distractors.add(String(digit)); // Sayı değeri tuzağı!
+                if (targetIdx < 8) distractors.add(formatWithSpaces(digit * multipliers[targetIdx + 1]));
+                if (targetIdx > 0) distractors.add(formatWithSpaces(digit * multipliers[targetIdx - 1]));
+                distractors.add(formatWithSpaces(digit * 1000));
+
+                distractors.delete(correctFormatted);
+                const options = [correctFormatted, ...Array.from(distractors).slice(0, 3)];
+                shuffleArray(options);
+
+                return {
+                    category: 'placevalue',
+                    icon: '🐙',
+                    title: 'Bilge Ahtapot • Basamak ve Bölük Değeri',
+                    reward: reward,
+                    number: num,
+                    instruction: `Verilen sayıda "${placeNames[targetIdx]}"nda bulunan rakamın BASAMAK DEĞERİ kaçtır?`,
+                    displayHtml: formatWithSpaces(num),
+                    coloredDisplayHtml: formatWithColoredPeriods(num),
+                    options: options,
+                    correctIndex: options.indexOf(correctFormatted),
+                    explanation: `${placeNames[targetIdx]}ndaki rakam <strong>${digit}</strong>'dir. Basamak değeri: ${digit} &times; ${formatWithSpaces(multipliers[targetIdx])} = <strong>${correctFormatted}</strong>.`
+                };
+            } else if (chosenType === 'period_number') {
+                const millions = Math.floor(num / 1000000);
+                const thousands = Math.floor((num % 1000000) / 1000);
+                const ones = num % 1000;
+
+                const askWhich = Math.floor(Math.random() * 3); // 0: Milyonlar, 1: Binler, 2: Birler
+                const periodTitles = ["Milyonlar bölüğündeki", "Binler bölüğündeki", "Birler bölüğündeki"];
+                const periodValues = [millions, thousands, ones];
+                const correctVal = String(periodValues[askWhich]);
+
+                let distractors = new Set();
+                periodValues.forEach(v => { if (String(v) !== correctVal) distractors.add(String(v)); });
+                distractors.add(formatWithSpaces(periodValues[askWhich] * 1000));
+                distractors.add(String(periodValues[askWhich] + 10));
+
+                distractors.delete(correctVal);
+                const options = [correctVal, ...Array.from(distractors).slice(0, 3)];
+                shuffleArray(options);
+
+                return {
+                    category: 'placevalue',
+                    icon: '🐙',
+                    title: 'Bilge Ahtapot • Bölük Analizi',
+                    reward: reward,
+                    number: num,
+                    instruction: `Aşağıdaki doğal sayının "${periodTitles[askWhich]}" sayı kaçtır?`,
+                    displayHtml: formatWithSpaces(num),
+                    coloredDisplayHtml: formatWithColoredPeriods(num),
+                    options: options,
+                    correctIndex: options.indexOf(correctVal),
+                    explanation: `Milyonlar bölüğü: ${millions}, Binler bölüğü: ${thousands}, Birler bölüğü: ${ones}. Dolayısıyla doğru cevap: <strong>${correctVal}</strong>.`
+                };
+            } else if (chosenType === 'place_diff' && nonZeroIndices.length > 0) {
+                // Basamak değeri ile sayı değeri farkı/toplamı
+                const targetIdx = nonZeroIndices[Math.floor(Math.random() * nonZeroIndices.length)];
+                const digit = parseInt(digitsStr[targetIdx], 10);
+                const placeVal = digit * multipliers[targetIdx];
+                const sumVal = placeVal + digit;
+                const correctFormatted = formatWithSpaces(sumVal);
+
+                let distractors = new Set([
+                    formatWithSpaces(placeVal),
+                    formatWithSpaces(placeVal - digit),
+                    formatWithSpaces(placeVal + digit * 10)
+                ]);
+                distractors.delete(correctFormatted);
+                const options = [correctFormatted, ...Array.from(distractors).slice(0, 3)];
+                shuffleArray(options);
+
+                return {
+                    category: 'placevalue',
+                    icon: '🐙',
+                    title: 'Bilge Ahtapot • Basamak ve Sayı Değeri',
+                    reward: reward,
+                    number: num,
+                    instruction: `Bu sayının "${placeNames[targetIdx]}"ndaki rakamın BASAMAK DEĞERİ ile SAYI DEĞERİ toplamı kaçtır?`,
+                    displayHtml: formatWithSpaces(num),
+                    coloredDisplayHtml: formatWithColoredPeriods(num),
+                    options: options,
+                    correctIndex: options.indexOf(correctFormatted),
+                    explanation: `Basamak değeri: <strong>${formatWithSpaces(placeVal)}</strong>, Sayı değeri (rakamın kendisi): <strong>${digit}</strong>. Toplamı: <strong>${correctFormatted}</strong>.`
+                };
+            } else {
+                // Expanded Form (Çözümleme)
+                let expandedParts = [];
+                for (let i = startIdx; i < 9; i++) {
+                    const d = parseInt(digitsStr[i], 10);
+                    if (d > 0) {
+                        expandedParts.push(`(${d} &times; ${formatWithSpaces(multipliers[i])})`);
+                    }
+                }
+                const correctFormatted = formatWithSpaces(num);
+                const millions = Math.floor(num / 1000000);
+                const thousands = Math.floor((num % 1000000) / 1000);
+                const ones = num % 1000;
+
+                let distractors = new Set([
+                    formatWithSpaces(millions * 1000000 + ones * 1000 + thousands),
+                    formatWithSpaces(num + 10000),
+                    formatWithSpaces(num - 900)
+                ]);
+                distractors.delete(correctFormatted);
+                const options = [correctFormatted, ...Array.from(distractors).slice(0, 3)];
+                shuffleArray(options);
+
+                return {
+                    category: 'placevalue',
+                    icon: '🐙',
+                    title: 'Bilge Ahtapot • Sayı Çözümleme',
+                    reward: reward,
+                    number: num,
+                    instruction: 'Aşağıda çözümlenmiş biçimi verilen doğal sayı hangisidir?',
+                    displayHtml: `<span class="text-lg sm:text-2xl text-purple-200 font-semibold leading-relaxed">${expandedParts.join(' + ')}</span>`,
+                    coloredDisplayHtml: `<span class="text-lg sm:text-2xl text-purple-200 font-semibold leading-relaxed">${expandedParts.join(' + ')}</span>`,
+                    options: options,
+                    correctIndex: options.indexOf(correctFormatted),
+                    explanation: `Basamak değerleri toplandığında elde edilen doğal sayı: <strong>${correctFormatted}</strong>.`
+                };
+            }
+        }
+
+        /* ----------------------------------------------------
+           6. RENDER QUESTION STAGE & INTERACTIONS
+        ---------------------------------------------------- */
+        function renderQuestionStage() {
+            document.getElementById('view-fish-hub').classList.add('hidden');
+            document.getElementById('view-question-stage').classList.remove('hidden');
+
+            const q = state.activeQuestion;
+            const currentTeam = state.teams[state.currentTeamIndex];
+
+            document.getElementById('q-category-icon').innerText = q.icon;
+            document.getElementById('q-category-title').innerText = q.title;
+            document.getElementById('q-reward-badge').innerText = `Ödül: +${q.reward} İnci Puanı`;
+            document.getElementById('q-active-team-oxygen').innerHTML = `${currentTeam.icon} ${currentTeam.name}: ${buildOxygenString(currentTeam.lives, currentTeam.maxLives)}`;
+            document.getElementById('q-instruction').innerText = q.instruction;
+            document.getElementById('q-main-display').innerHTML = q.displayHtml;
+
+            // Populate period helper badges for Lantern Joker / Feedback
+            const millions = Math.floor(q.number / 1000000);
+            const thousands = String(Math.floor((q.number % 1000000) / 1000)).padStart(3, '0');
+            const ones = String(q.number % 1000).padStart(3, '0');
+
+            document.getElementById('helper-millions-badge').innerHTML = `🔴 Milyonlar Bölüğü: <strong>${q.category === 'writing' ? '(' + String(millions).length + ' Basamak)' : millions}</strong>`;
+            document.getElementById('helper-thousands-badge').innerHTML = `🟡 Binler Bölüğü: <strong>${q.category === 'writing' ? '(3 Basamak)' : thousands}</strong>`;
+            document.getElementById('helper-ones-badge').innerHTML = `🟢 Birler Bölüğü: <strong>${q.category === 'writing' ? '(3 Basamak)' : ones}</strong>`;
+            document.getElementById('helper-table-text').innerHTML = `Basamak Sırası (Sağdan Sola): Birler, Onlar, Yüzler | Binler, On Binler, Yüz Binler | Milyonlar, On Milyonlar, Yüz Milyonlar`;
+
+            document.getElementById('q-period-helper').classList.add('hidden');
+            document.getElementById('q-period-helper').classList.remove('flex');
+            document.getElementById('q-feedback-panel').classList.add('hidden');
+
+            // Update Joker button availability for current team
+            updateJokerButtonsUI(currentTeam);
+
+            if (q.category === 'writing') {
+                // Show Smartboard Keypad
+                document.getElementById('interaction-mcq').classList.add('hidden');
+                const keypadEl = document.getElementById('interaction-keypad');
+                keypadEl.classList.remove('hidden');
+                keypadEl.classList.add('flex');
+                document.getElementById('btn-submit-keypad').disabled = false;
+                document.getElementById('btn-submit-keypad').classList.remove('opacity-50');
+
+                state.periodInputs = ["", "", ""];
+                const mLen = q.expectedPeriods[0].length;
+                document.getElementById('pbox-hint-0').innerText = `(${mLen} Basamaklı)`;
+                selectPeriodBox(0);
+                updatePeriodBoxesUI();
+            } else {
+                // Show Multiple Choice Options
+                document.getElementById('interaction-keypad').classList.add('hidden');
+                document.getElementById('interaction-keypad').classList.remove('flex');
+                const mcqEl = document.getElementById('interaction-mcq');
+                mcqEl.classList.remove('hidden');
+                mcqEl.innerHTML = '';
+
+                q.options.forEach((opt, idx) => {
+                    const btn = document.createElement('button');
+                    btn.id = `mcq-opt-${idx}`;
+                    btn.className = "p-4 sm:p-5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 border-2 border-sky-500/30 hover:border-sky-400 text-left transition flex items-center space-x-3.5 group shadow-md";
+                    btn.innerHTML = `
+                        <span class="w-10 h-10 rounded-xl bg-sky-500/20 border border-sky-400/40 text-sky-300 title-font font-bold text-lg flex items-center justify-center group-hover:bg-sky-500 group-hover:text-white transition shrink-0">
+                            ${String.fromCharCode(65 + idx)}
+                        </span>
+                        <span class="title-font font-semibold text-base sm:text-lg text-white leading-snug">${opt}</span>
+                    `;
+                    btn.onclick = () => handleMcqAnswer(idx);
+                    mcqEl.appendChild(btn);
+                });
+            }
+        }
+
+        /* ----------------------------------------------------
+           7. KEYPAD LOGIC (FOR PUFFERFISH WRITING)
+        ---------------------------------------------------- */
+        function selectPeriodBox(boxIdx) {
+            if (state.questionAnswered) return;
+            state.activePeriodBox = boxIdx;
+            const borderColors = ['border-rose-500', 'border-amber-400', 'border-emerald-400'];
+            [0, 1, 2].forEach(i => {
+                const box = document.getElementById(`pbox-${i}`);
+                if (i === boxIdx) {
+                    box.className = `cursor-pointer p-4 rounded-2xl bg-slate-800 border-2 ${borderColors[i]} shadow-xl text-center transition transform scale-[1.02]`;
+                } else {
+                    box.className = `cursor-pointer p-4 rounded-2xl bg-slate-900/80 border-2 border-slate-700 text-center transition opacity-85`;
+                }
+            });
+        }
+
+        function keypadPress(digits) {
+            if (state.questionAnswered) return;
+            playEffect('click');
+
+            const boxIdx = state.activePeriodBox;
+            const maxLen = boxIdx === 0 ? state.activeQuestion.expectedPeriods[0].length : 3;
+
+            if (digits === '000') {
+                if (boxIdx > 0) {
+                    state.periodInputs[boxIdx] = '000';
+                    if (boxIdx < 2) selectPeriodBox(boxIdx + 1);
+                }
+            } else {
+                if (state.periodInputs[boxIdx].length < maxLen) {
+                    state.periodInputs[boxIdx] += digits;
+                    // Auto-advance to next period box when full
+                    if (state.periodInputs[boxIdx].length === maxLen && boxIdx < 2) {
+                        selectPeriodBox(boxIdx + 1);
+                    }
+                }
+            }
+            updatePeriodBoxesUI();
+        }
+
+        function keypadBackspace() {
+            if (state.questionAnswered) return;
+            playEffect('click');
+            const boxIdx = state.activePeriodBox;
+            if (state.periodInputs[boxIdx].length > 0) {
+                state.periodInputs[boxIdx] = state.periodInputs[boxIdx].slice(0, -1);
+            } else if (boxIdx > 0) {
+                selectPeriodBox(boxIdx - 1);
+                state.periodInputs[state.activePeriodBox] = state.periodInputs[state.activePeriodBox].slice(0, -1);
+            }
+            updatePeriodBoxesUI();
+        }
+
+        function keypadClearAll() {
+            if (state.questionAnswered) return;
+            playEffect('click');
+            state.periodInputs = ["", "", ""];
+            selectPeriodBox(0);
+            updatePeriodBoxesUI();
+        }
+
+        function updatePeriodBoxesUI() {
+            [0, 1, 2].forEach(i => {
+                const valEl = document.getElementById(`pbox-val-${i}`);
+                valEl.innerText = state.periodInputs[i] || "___";
+            });
+        }
+
+        function submitKeypadAnswer() {
+            if (state.questionAnswered) return;
+            const q = state.activeQuestion;
+            const p0 = state.periodInputs[0].trim();
+            const p1 = state.periodInputs[1].trim();
+            const p2 = state.periodInputs[2].trim();
+
+            if (!p0 || !p1 || !p2) {
+                openDialog("Eksik Bölük Var!", "Lütfen Milyonlar, Binler ve Birler bölüğü kutularının tamamını doldurun.", "⚠️");
+                return;
+            }
+
+            const isCorrect = (p0 === q.expectedPeriods[0] && p1 === q.expectedPeriods[1] && p2 === q.expectedPeriods[2]);
+            document.getElementById('btn-submit-keypad').disabled = true;
+            document.getElementById('btn-submit-keypad').classList.add('opacity-50');
+
+            // Highlight period boxes green or red
+            [0, 1, 2].forEach(i => {
+                const box = document.getElementById(`pbox-${i}`);
+                if (state.periodInputs[i] === q.expectedPeriods[i]) {
+                    box.className = "p-4 rounded-2xl bg-emerald-950/80 border-2 border-emerald-400 text-center";
+                } else {
+                    box.className = "p-4 rounded-2xl bg-rose-950/80 border-2 border-rose-400 text-center";
+                }
+            });
+
+            finalizeQuestionOutcome(isCorrect);
+        }
+
+        /* ----------------------------------------------------
+           8. MULTIPLE CHOICE & OUTCOME HANDLING
+        ---------------------------------------------------- */
+        function handleMcqAnswer(selectedIndex) {
+            if (state.questionAnswered) return;
+            const q = state.activeQuestion;
+            const isCorrect = selectedIndex === q.correctIndex;
+
+            q.options.forEach((_, idx) => {
+                const btn = document.getElementById(`mcq-opt-${idx}`);
+                if (!btn) return;
+                btn.disabled = true;
+                if (idx === q.correctIndex) {
+                    btn.className = "p-4 sm:p-5 rounded-2xl bg-emerald-600/90 border-2 border-emerald-300 text-left transition flex items-center space-x-3.5 shadow-xl";
+                } else if (idx === selectedIndex && !isCorrect) {
+                    btn.className = "p-4 sm:p-5 rounded-2xl bg-rose-600/90 border-2 border-rose-300 text-left transition flex items-center space-x-3.5 shadow-xl";
+                } else {
+                    btn.classList.add('opacity-40');
+                }
+            });
+
+            finalizeQuestionOutcome(isCorrect);
+        }
+
+        function finalizeQuestionOutcome(isCorrect, isTimeout = false) {
+            state.questionAnswered = true;
+            stopTimer();
+
+            const q = state.activeQuestion;
+            const currentTeam = state.teams[state.currentTeamIndex];
+
+            // Show full period values in helper badges after answering
+            const millions = Math.floor(q.number / 1000000);
+            const thousands = String(Math.floor((q.number % 1000000) / 1000)).padStart(3, '0');
+            const ones = String(q.number % 1000).padStart(3, '0');
+            document.getElementById('helper-millions-badge').innerHTML = `🔴 Milyonlar Bölüğü: <strong>${millions}</strong>`;
+            document.getElementById('helper-thousands-badge').innerHTML = `🟡 Binler Bölüğü: <strong>${thousands}</strong>`;
+            document.getElementById('helper-ones-badge').innerHTML = `🟢 Birler Bölüğü: <strong>${ones}</strong>`;
+
+            document.getElementById('q-main-display').innerHTML = formatWithColoredPeriods(q.number);
+            const helper = document.getElementById('q-period-helper');
+            helper.classList.remove('hidden');
+            helper.classList.add('flex');
+
+            const feedbackPanel = document.getElementById('q-feedback-panel');
+            const feedbackIcon = document.getElementById('q-feedback-icon');
+            const feedbackTitle = document.getElementById('q-feedback-title');
+            const feedbackDetail = document.getElementById('q-feedback-detail');
+            const feedbackActions = document.getElementById('q-feedback-actions');
+
+            feedbackPanel.classList.remove('hidden');
+
+            if (isCorrect) {
+                playEffect('correct');
+                currentTeam.streak++;
+                const streakBonus = currentTeam.streak >= 2 ? 25 : 0;
+                const totalEarned = q.reward + streakBonus;
+                currentTeam.score += totalEarned;
+                currentTeam.correctCount++;
+
+                feedbackPanel.className = "rounded-2xl p-5 border bg-emerald-950/90 border-emerald-400 flex flex-col sm:flex-row items-center justify-between gap-4";
+                feedbackIcon.innerText = "🎉";
+                feedbackTitle.innerText = streakBonus > 0
+                    ? `Tebrikler ${currentTeam.name}! +${q.reward} İnci (+${streakBonus} 🔥 Seri Bonusu!)`
+                    : `Tebrikler ${currentTeam.name}! (+${q.reward} İnci Puanı)`;
+                feedbackDetail.innerHTML = q.explanation;
+                feedbackActions.innerHTML = `
+                    <button onclick="advanceToNextTurn()" class="w-full sm:w-auto whitespace-nowrap px-6 py-3 bg-white text-slate-900 hover:bg-sky-100 title-font font-bold rounded-xl shadow-lg transition">
+                        Sıradaki Gruba Geç <i class="fa-solid fa-forward-step ml-1"></i>
+                    </button>
+                `;
+            } else {
+                playEffect('wrong');
+                currentTeam.streak = 0;
+                currentTeam.wrongCount++;
+                currentTeam.lives = Math.max(0, currentTeam.lives - 1);
+
+                feedbackPanel.className = "rounded-2xl p-5 border bg-rose-950/90 border-rose-400 flex flex-col sm:flex-row items-center justify-between gap-4";
+                feedbackIcon.innerText = isTimeout ? "⏰" : "🫧";
+                feedbackTitle.innerText = isTimeout
+                    ? `Süre Doldu! 1 Oksijen Tüpü Kaybettiniz.`
+                    : `Yanlış Cevap! 1 Oksijen Tüpü Kaybettiniz.`;
+                feedbackDetail.innerHTML = q.explanation;
+
+                if (currentTeam.lives === 0) {
+                    feedbackDetail.innerHTML += `<br><span class="text-amber-300 font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Oksijen tüpleriniz tükendi! Yarışmaya devam etmek için Yedek Oksijen Tüpü alabilirsiniz.</span>`;
+                    feedbackActions.innerHTML = `
+                        <button onclick="activateEmergencyOxygen()" class="w-full sm:w-auto whitespace-nowrap px-5 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 title-font font-bold rounded-xl shadow-lg transition">
+                            🫧 Yedek Oksijen Tüpü Al (-50 Puan)
+                        </button>
+                    `;
+                } else {
+                    feedbackActions.innerHTML = `
+                        <button onclick="advanceToNextTurn()" class="w-full sm:w-auto whitespace-nowrap px-6 py-3 bg-white text-slate-900 hover:bg-sky-100 title-font font-bold rounded-xl shadow-lg transition">
+                            Sıradaki Gruba Geç <i class="fa-solid fa-forward-step ml-1"></i>
+                        </button>
+                    `;
+                }
+            }
+
+            document.getElementById('q-active-team-oxygen').innerHTML = `${currentTeam.icon} ${currentTeam.name}: ${buildOxygenString(currentTeam.lives, currentTeam.maxLives)}`;
+            renderScoreboard();
+        }
+
+        function activateEmergencyOxygen() {
+            playEffect('joker');
+            const currentTeam = state.teams[state.currentTeamIndex];
+            currentTeam.score = Math.max(0, currentTeam.score - 50);
+            currentTeam.lives = 1;
+            renderScoreboard();
+            advanceToNextTurn();
+        }
+
+        function advanceToNextTurn() {
+            playEffect('click');
+            state.currentTeamIndex++;
+            if (state.currentTeamIndex >= state.teamCount) {
+                state.currentTeamIndex = 0;
+                state.currentRound++;
+            }
+
+            if (state.currentRound > state.totalRounds) {
+                showPodiumScreen();
+            } else {
+                showFishHub();
+            }
+        }
+
+        /* ----------------------------------------------------
+           9. TIMER & UNDERWATER JOKERS
+        ---------------------------------------------------- */
+        function startTimer() {
+            stopTimer();
+            state.timeRemaining = state.turnTimeLimit;
+            updateTimerUI();
+
+            state.timerInterval = setInterval(() => {
+                if (state.questionAnswered) return;
+                state.timeRemaining--;
+                if (state.timeRemaining <= 10 && state.timeRemaining > 0) {
+                    playEffect('tick');
+                }
+                updateTimerUI();
+
+                if (state.timeRemaining <= 0) {
+                    stopTimer();
+                    finalizeQuestionOutcome(false, true);
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (state.timerInterval) {
+                clearInterval(state.timerInterval);
+                state.timerInterval = null;
+            }
+        }
+
+        function updateTimerUI() {
+            const textEl = document.getElementById('timer-text');
+            const barEl = document.getElementById('timer-bar');
+            textEl.innerText = `${state.timeRemaining} sn`;
+
+            const pct = Math.max(0, (state.timeRemaining / state.turnTimeLimit) * 100);
+            barEl.style.width = `${pct}%`;
+
+            if (state.timeRemaining <= 10) {
+                barEl.className = "h-full bg-rose-500 transition-all duration-300";
+                textEl.className = "text-rose-400 title-font text-sm font-bold animate-pulse";
+            } else {
+                barEl.className = "h-full bg-gradient-to-r from-emerald-400 via-sky-400 to-blue-500 transition-all duration-300";
+                textEl.className = "text-sky-300 title-font text-sm font-bold";
+            }
+        }
+
+        function updateJokerButtonsUI(team) {
+            const btnLantern = document.getElementById('joker-lantern');
+            const btnCrab = document.getElementById('joker-crab');
+            const btnOxygen = document.getElementById('joker-oxygen');
+
+            btnLantern.disabled = !team.jokers.lantern;
+            btnLantern.className = team.jokers.lantern
+                ? "px-3 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/50 text-amber-200 text-xs font-bold flex items-center space-x-1.5 transition"
+                : "px-3 py-2 rounded-xl bg-slate-800/40 border border-slate-700 text-slate-500 text-xs font-bold flex items-center space-x-1.5 opacity-40 cursor-not-allowed";
+
+            btnCrab.disabled = !team.jokers.crab;
+            btnCrab.className = team.jokers.crab
+                ? "px-3 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-400/50 text-rose-200 text-xs font-bold flex items-center space-x-1.5 transition"
+                : "px-3 py-2 rounded-xl bg-slate-800/40 border border-slate-700 text-slate-500 text-xs font-bold flex items-center space-x-1.5 opacity-40 cursor-not-allowed";
+
+            btnOxygen.disabled = !team.jokers.oxygen;
+            btnOxygen.className = team.jokers.oxygen
+                ? "px-3 py-2 rounded-xl bg-teal-500/20 hover:bg-teal-500/30 border border-teal-400/50 text-teal-200 text-xs font-bold flex items-center space-x-1.5 transition"
+                : "px-3 py-2 rounded-xl bg-slate-800/40 border border-slate-700 text-slate-500 text-xs font-bold flex items-center space-x-1.5 opacity-40 cursor-not-allowed";
+        }
+
+        function useJoker(type) {
+            if (state.questionAnswered) return;
+            const currentTeam = state.teams[state.currentTeamIndex];
+            if (!currentTeam.jokers[type]) return;
+
+            playEffect('joker');
+            currentTeam.jokers[type] = false;
+            updateJokerButtonsUI(currentTeam);
+            renderScoreboard();
+
+            const q = state.activeQuestion;
+
+            if (type === 'lantern') {
+                // Bölük Feneri: Highlights periods with colors and reveals period breakdown
+                document.getElementById('q-main-display').innerHTML = q.coloredDisplayHtml;
+                const helper = document.getElementById('q-period-helper');
+                helper.classList.remove('hidden');
+                helper.classList.add('flex');
+                if (q.category === 'writing') {
+                    // Show digit count hint for each period
+                    document.getElementById('pbox-hint-0').innerText = `İpucu: Milyonlar bölüğünde ${q.expectedPeriods[0].length} rakam var!`;
+                }
+            } else if (type === 'crab') {
+                // Yengeç Kıskacı: Eliminates 2 wrong MCQ options OR fills in the Binler period in Writing mode
+                if (q.category === 'writing') {
+                    state.periodInputs[1] = q.expectedPeriods[1];
+                    updatePeriodBoxesUI();
+                } else {
+                    let wrongIndices = [];
+                    q.options.forEach((_, idx) => {
+                        if (idx !== q.correctIndex) wrongIndices.push(idx);
+                    });
+                    shuffleArray(wrongIndices);
+                    wrongIndices.slice(0, 2).forEach(idx => {
+                        const btn = document.getElementById(`mcq-opt-${idx}`);
+                        if (btn) {
+                            btn.disabled = true;
+                            btn.classList.add('opacity-20', 'line-through', 'pointer-events-none');
+                        }
+                    });
+                }
+            } else if (type === 'oxygen') {
+                // +20 Saniye Ekstra Oksijen
+                state.timeRemaining += 20;
+                updateTimerUI();
+            }
+        }
+
+        /* ----------------------------------------------------
+           10. PODIUM & MODALS
+        ---------------------------------------------------- */
+        function showPodiumScreen() {
+            stopTimer();
+            playEffect('correct');
+            document.getElementById('screen-arena').classList.add('hidden');
+            document.getElementById('screen-arena').classList.remove('flex');
+            document.getElementById('header-tournament-info').classList.add('hidden');
+            document.getElementById('screen-podium').classList.remove('hidden');
+
+            const sortedTeams = [...state.teams].sort((a, b) => b.score - a.score);
+
+            // Render Top 3 Visual Podium Bars
+            const podiumBarsEl = document.getElementById('visual-podium-bars');
+            podiumBarsEl.innerHTML = '';
+            const podiumOrder = [1, 0, 2]; // 2nd, 1st, 3rd for classic podium layout
+            const heights = ["h-36", "h-28", "h-24"];
+            const barColors = [
+                "from-amber-400 to-yellow-600 border-amber-300",
+                "from-slate-300 to-slate-500 border-slate-200",
+                "from-amber-700 to-orange-900 border-amber-500"
+            ];
+            const rankLabels = ["🥇 1.", "🥈 2.", "🥉 3."];
+
+            podiumOrder.forEach(rankIdx => {
+                if (rankIdx >= sortedTeams.length) return;
+                const t = sortedTeams[rankIdx];
+                const col = document.createElement('div');
+                col.className = "flex flex-col items-center w-28 sm:w-36";
+                col.innerHTML = `
+                    <div class="text-3xl sm:text-4xl mb-1 swim-anim">${t.icon}</div>
+                    <div class="title-font font-bold text-xs sm:text-sm text-white truncate max-w-full px-1">${t.name}</div>
+                    <div class="title-font font-extrabold text-sm sm:text-base text-amber-300 mb-2">${t.score} P</div>
+                    <div class="w-full ${heights[rankIdx]} rounded-t-2xl bg-gradient-to-b ${barColors[rankIdx]} border-t-2 flex items-center justify-center shadow-xl">
+                        <span class="title-font font-bold text-lg sm:text-2xl text-slate-950">${rankLabels[rankIdx]}</span>
+                    </div>
+                `;
+                podiumBarsEl.appendChild(col);
+            });
+
+            const listEl = document.getElementById('podium-list');
+            listEl.innerHTML = '';
+
+            const medals = ["🥇 1.", "🥈 2.", "🥉 3.", "🎖️ 4."];
+            sortedTeams.forEach((team, idx) => {
+                const totalQ = team.correctCount + team.wrongCount;
+                const accuracy = totalQ > 0 ? Math.round((team.correctCount / totalQ) * 100) : 0;
+                const row = document.createElement('div');
+                row.className = `glass-card p-4 sm:p-5 rounded-2xl flex items-center justify-between border ${idx === 0 ? 'border-amber-400 bg-amber-950/30 shadow-lg' : 'border-slate-700'}`;
+                row.innerHTML = `
+                    <div class="flex items-center space-x-4">
+                        <div class="title-font text-xl sm:text-2xl font-bold text-amber-300 w-14">${medals[idx]}</div>
+                        <div class="text-3xl">${team.icon}</div>
+                        <div>
+                            <div class="title-font text-lg sm:text-xl font-bold text-white">${team.name}</div>
+                            <div class="text-xs text-slate-300">
+                                Doğru: <strong class="text-emerald-400">${team.correctCount}</strong> •
+                                Yanlış: <strong class="text-rose-400">${team.wrongCount}</strong> •
+                                Başarı: <strong class="text-sky-300">%${accuracy}</strong> •
+                                Oksijen: ${team.lives} 🫧
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="title-font text-2xl sm:text-3xl font-bold text-amber-400">${team.score}</div>
+                        <div class="text-xs font-bold uppercase text-amber-200/70">İnci Puanı</div>
+                    </div>
+                `;
+                listEl.appendChild(row);
+            });
+        }
+
+        function openTeacherModal() {
+            playEffect('click');
+            const m = document.getElementById('modal-teacher');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+        }
+
+        function closeTeacherModal() {
+            playEffect('click');
+            const m = document.getElementById('modal-teacher');
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+        }
+
+        function openDialog(title, msg, icon, actionsHtml) {
+            document.getElementById('dialog-title').innerText = title;
+            document.getElementById('dialog-msg').innerText = msg;
+            document.getElementById('dialog-icon').innerText = icon || '🫧';
+            const actionsEl = document.getElementById('dialog-actions');
+            actionsEl.innerHTML = actionsHtml || `<button onclick="closeDialog()" class="px-6 py-2.5 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-xl">Tamam</button>`;
+            const modal = document.getElementById('modal-dialog');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeDialog() {
+            const modal = document.getElementById('modal-dialog');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function confirmResetToSetup() {
+            openDialog(
+                "Yeni Oyun Kurulsun mu?",
+                "Mevcut turnuva puanları sıfırlanacak ve grup kurulum ekranına dönülecektir.",
+                "🔄",
+                `
+                <button onclick="closeDialog()" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold rounded-xl">İptal</button>
+                <button onclick="closeDialog(); resetToSetup();" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl">Evet, Sıfırla</button>
+                `
+            );
+        }
+
+        function resetToSetup() {
+            stopTimer();
+            document.getElementById('screen-arena').classList.add('hidden');
+            document.getElementById('screen-arena').classList.remove('flex');
+            document.getElementById('screen-podium').classList.add('hidden');
+            document.getElementById('header-tournament-info').classList.add('hidden');
+            document.getElementById('reset-btn').classList.add('hidden');
+            document.getElementById('screen-setup').classList.remove('hidden');
+        }
+
+        function shuffleArray(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+        }
+
+        window.onload = initSetupScreen;
+    </script>
+</body>
+</html>
